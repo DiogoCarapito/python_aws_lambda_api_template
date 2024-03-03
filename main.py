@@ -24,4 +24,3 @@ def lambda_handler(event, context):
     json_data = df.to_pandas().to_json(orient="records")
 
     return {"statusCode": 200, "body": json_data}
-

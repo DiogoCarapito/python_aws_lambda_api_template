@@ -11,8 +11,11 @@ format:
 lint:
 	pylint --disable=R,C,W0613 *.py utils/*.py tests/*.py
 
-#container-lint:
-#	docker run -rm -i hadolint/hadolint < Dockerfile
+docker-lint:
+	docker run --rm -i hadolint/hadolint < Dockerfile
+
+build:
+	docker build -t lambda-api-template .
 
 refactor:
 	format lint
@@ -20,4 +23,4 @@ refactor:
 deploy:
 	echo "deploy not implemented"
 
-all: install lint test format 
+all: install format lint test

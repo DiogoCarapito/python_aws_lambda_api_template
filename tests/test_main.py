@@ -1,8 +1,8 @@
 import base64
 import io
 import pandas as pd
+import pytest
 
-# import polars as pl
 from main import lambda_handler
 
 
@@ -30,3 +30,31 @@ def test_lambda_handler():
     # Check that the body is the JSON representation of the DataFrame
     expected_body = df.to_json(orient="records")
     assert result["body"] == expected_body
+
+
+content_types = [
+    "text/plain",
+    "text/html",
+    "application/json",
+    "application/xml",
+    "application/javascript",
+    "application/octet-stream",
+    "image/jpeg",
+    "image/png",
+    # "multipart/form-data", the one that is supposed to be passed into the API
+    "application/x-www-form-urlencoded",
+]
+
+
+# Test invalid content types
+@pytest.mark.parametrize("content_type", content_types)
+def test_invalid_content_type(content_type):
+    # Create an event with the content type
+    event = {"headers": {"content-type": content_type}, "body": "test"}
+    # Call the lambda_handler function with the event
+    response = lambda_handler(event, "")
+    # Check that the status code is 400
+    assert response == {
+        "statusCode": 400,
+        "body": "Invalid Content-Type",
+    }, f"Unexpected response for Content-Type: {content_type}"
