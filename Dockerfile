@@ -1,9 +1,17 @@
-FROM python:3.9-slim
+# Use a Python base image
+FROM public.ecr.aws/lambda/python:3.9
 
-WORKDIR /code
+# Set a working directory
+WORKDIR /var/task
 
-COPY . /code
+# Copy your requirements file
+COPY requirements.txt .
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python", "main.py"]
+# Copy your application code
+COPY . .
+
+# Set the command to run your application
+CMD ["lambda_function.lambda_handler"]

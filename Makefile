@@ -23,4 +23,4 @@ refactor:
 deploy:
 	echo "deploy not implemented"
 
-all: install format lint test
+all: install lint test format

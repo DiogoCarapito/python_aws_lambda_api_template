@@ -23,3 +23,6 @@ build docker image
 docker build -t main:latest .
 ```
 
+```bash
+docker run -p 8080:80 your-image:latest
+```
